@@ -1,0 +1,30 @@
+{
+  "name": "adaptive-poisson-sampling",
+  "version": "1.0.0",
+  "description": "An adaptive poisson disk sampling algorithm to generate 2D blue noise vector distributions",
+  "main": "adaptive-poisson-sampling.js",
+  "dependencies": {
+    "vector": "git+https://github.com/Evelios/Vector.git"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "node test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Evelios/adaptive-poisson-sampling.git"
+  },
+  "keywords": [
+    "poisson",
+    "blue-noise",
+    "noise",
+    "2d",
+    "geometry"
+  ],
+  "author": "Thomas Waters",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Evelios/adaptive-poisson-sampling/issues"
+  },
+  "homepage": "https://github.com/Evelios/adaptive-poisson-sampling#readme"
+}
