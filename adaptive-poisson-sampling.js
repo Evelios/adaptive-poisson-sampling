@@ -11,6 +11,7 @@
 (function() {
 
 function poisson(dimensions, density, min_dist=0.1) {
+  const density_fn = density instanceof Function ? density : () => density;
   const cellSize = min_dist / Math.SQRT2;
   const max_attempts = 30;
   let out_points = [];
@@ -34,10 +35,12 @@ function poisson(dimensions, density, min_dist=0.1) {
 
   while (active_points.length) {
     const current_point = active_points.splice(Math.floor(Math.random() * active_points.length), 1)[0];
+    const location_density = density_fn(current_point);    // Evaluate the density at the current point
 
     attempts = 0;
     while (attempts < max_attempts) {
-      const radius = density + Math.sqrt(Math.random()) * density * attempts / max_attempts;
+      const range_reduction = attempts / max_attempts; // Reduce range of point choices as the attempts decreases
+      const radius = location_density + ( Math.sqrt(Math.random()) * location_density * range_reduction );
       const angle = 2 * Math.PI * Math.random();
       const new_point = toGrid([
           current_point[0] + radius * Math.cos(angle),
@@ -47,8 +50,8 @@ function poisson(dimensions, density, min_dist=0.1) {
       // Try the new point against the already generated points
       const closestDist = minDist(new_point, out_points);
       if (inBox(dimensions, new_point) && 
-          closestDist < density * 2    &&
-          closestDist > density ) {
+          closestDist < location_density * 2    &&
+          closestDist > location_density ) {
 
         out_points.push(new_point);
         active_points.push(new_point);

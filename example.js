@@ -16,7 +16,14 @@ var points;
 
 var params = {
     // Parameters
-    density: 50
+    density: 25,
+    distribution: 'Uniform',
+
+    // Options
+    distributions: [
+        'Uniform',
+        'Gradient'
+    ]
 };
 
 function setup() {
@@ -34,6 +41,7 @@ function setUpGui() {
     var gui = new dat.GUI();
 
     gui.add(params, "density", 15, 50, 1).name("Point Density").onChange(createAndRender);
+    gui.add(params, "distribution", params.distributions).name("Distribution").onChange(createAndRender);
 }
 
 function createAndRender() {
@@ -42,7 +50,16 @@ function createAndRender() {
 }
 
 function create() {
-    points = poisson(bbox, params.density);
+    if (params.distribution === 'Uniform') {
+        points = poisson(bbox, params.density);
+    }
+    else if (params.distribution === 'Gradient') {
+        points = poisson(bbox, (vec) => {
+            return params.density / 2 + params.density * Math.pow(vec[0] / bbox[0], 2);
+        });
+    } else {
+        throw Error('Incorrect Distribution Param');
+    }
 }
 
 function render() {
