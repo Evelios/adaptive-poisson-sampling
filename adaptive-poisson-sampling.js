@@ -8,9 +8,9 @@
 
 // };
 
-const Vector = require('vector');
+(function() {
 
-module.exports = function sample(dimensions, density, min_dist=0.1) {
+function poisson(dimensions, density, min_dist=0.1) {
   const cellSize = min_dist / Math.SQRT2;
   const max_attempts = 30;
   let out_points = [];
@@ -37,14 +37,12 @@ module.exports = function sample(dimensions, density, min_dist=0.1) {
 
     attempts = 0;
     while (attempts < max_attempts) {
-      const radius = density + Math.sqrt(Math.random()) * density;
+      const radius = density + Math.sqrt(Math.random()) * density * attempts / max_attempts;
       const angle = 2 * Math.PI * Math.random();
-      const new_point = Vector.add(
-        current_point,
-        toGrid([
-          radius * Math.cos(angle),
-          radius * Math.sin(angle)
-      ]));
+      const new_point = toGrid([
+          current_point[0] + radius * Math.cos(angle),
+          current_point[1] + radius * Math.sin(angle)
+      ]);
 
       // Try the new point against the already generated points
       const closestDist = minDist(new_point, out_points);
@@ -80,3 +78,12 @@ function inBox(bbox, point) {
   return point[0] > 0 && point[0] < bbox[0] &&
          point[1] > 0 && point[1] < bbox[1];
 }
+
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+  module.exports = poisson;
+}
+else {
+  window.poisson = poisson;
+}
+
+})();
