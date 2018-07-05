@@ -22,7 +22,8 @@ var params = {
     // Options
     distributions: [
         'Uniform',
-        'Gradient'
+        'Gradient',
+        'Noise'
     ]
 };
 
@@ -50,16 +51,21 @@ function createAndRender() {
 }
 
 function create() {
-    if (params.distribution === 'Uniform') {
-        points = poisson(bbox, params.density);
-    }
-    else if (params.distribution === 'Gradient') {
-        points = poisson(bbox, (vec) => {
-            return params.density / 2 + params.density * Math.pow(vec[0] / bbox[0], 2);
-        });
-    } else {
-        throw Error('Incorrect Distribution Param');
-    }
+    const densityFunction = {
+        Uniform : () => {
+            return params.density;
+        },
+        Gradient : (vec) => {
+            return params.density / 3 + params.density * Math.pow(vec[0] / bbox[0], 2);
+        },
+        Noise : (vec) => {
+            const min_density = 1;
+            const noise_scale = 100;
+            return min_density + params.density * noise(vec[0] / noise_scale, vec[1] / noise_scale);
+        }
+    };
+
+    points = poisson(bbox, densityFunction[params.distribution]);
 }
 
 function render() {
