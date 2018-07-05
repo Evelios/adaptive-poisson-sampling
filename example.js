@@ -23,7 +23,8 @@ var params = {
     distributions: [
         'Uniform',
         'Gradient',
-        'Noise'
+        'Noise',
+        'Checkerboard'
     ]
 };
 
@@ -62,6 +63,11 @@ function create() {
             const min_density = 1;
             const noise_scale = 100;
             return min_density + params.density * noise(vec[0] / noise_scale, vec[1] / noise_scale);
+        },
+        Checkerboard : (vec) => {
+            const grid_size = 100;
+            const vec_tile = Math.floor(vec[0] / grid_size) + Math.floor(vec[1] / grid_size);
+            return vec_tile % 2 == 0 ? params.density / 2 : params.density;
         }
     };
 
