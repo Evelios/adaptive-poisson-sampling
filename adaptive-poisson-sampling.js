@@ -44,7 +44,7 @@ export default function poisson(dimensions, density, min_dist=0.1) {
       ]);
 
       // Try the new point against the already generated points
-      const closestDist = minDist(new_point, out_points);
+      const closestDist = minDist(new_point, point_tree, location_density);
       if (inBox(dimensions, new_point) && 
           closestDist < location_density * 2    &&
           closestDist > location_density ) {
@@ -61,8 +61,21 @@ export default function poisson(dimensions, density, min_dist=0.1) {
 }
 
 // Get the minimum distance from position to a list of points
-function minDist(position, points) {
-  const min = points.reduce((prev, current) => {
+// within 2x the location_density. This function specifically
+// works on the bounding box in the relevent range of points
+function minDist(position, point_tree, location_density) {
+  const local_points = point_tree.search({
+    minX: position[0] - location_density,
+    minY: position[1] - location_density,
+    maxX: position[0] + location_density,
+    maxY: position[1] + location_density,
+  });
+
+  if (local_points.length == 0) {
+    return Infinity;
+  }
+
+  const min = local_points.reduce((prev, current) => {
     return Math.min(prev, pointDist2(position, current));
   }, Infinity);
 
