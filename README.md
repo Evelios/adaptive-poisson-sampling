@@ -37,6 +37,7 @@ var density = 5; // Average distance between points
 // Making uniform density noise
 var noise = poisson(dimensions, density);
 
+// returns a list of points [[x, y], [x, y], ...]
 
 // Function takes a vector of the form [x, y] and needs to return a number
 var density_function = function(vector) {
