@@ -1,18 +1,13 @@
-// http://devmag.org.za/2009/05/03/poisson-disk-sampling/
-
-// N-Dimensional Sampling
+// Algorithm Sources
 // https://www.cs.ubc.ca/~rbridson/docs/bridson-siggraph07-poissondisk.pdf
+// http://devmag.org.za/2009/05/03/poisson-disk-sampling/
+import Quadtree from 'rbush';
 
-// module.exports = function sample(dimensions, density, variance, maxTries=8) {
-//   density = density instanceof Function ? density : () => density;
-
-// };
-
-(function() {
-
-function poisson(dimensions, density, min_dist=0.1) {
+export default function poisson(dimensions, density, min_dist=0.1) {
   const density_fn = density instanceof Function ? density : () => density;
+  const [width, height] = dimensions;
   const cellSize = min_dist / Math.SQRT2;
+  const point_tree = Quadtree(9, ['[0]', '[1]', '[0]', '[1]']); // accept [x, y] points
   const max_attempts = 30;
   let out_points = [];
   let active_points = [];
@@ -26,10 +21,11 @@ function poisson(dimensions, density, min_dist=0.1) {
   }
 
   const seed_point = toGrid([
-    Math.random() * dimensions[0],
-    Math.random() * dimensions[1]
+    Math.random() * width,
+    Math.random() * height
   ]);
 
+  point_tree.insert(seed_point);
   out_points.push(seed_point);
   active_points.push(seed_point);
 
@@ -53,6 +49,7 @@ function poisson(dimensions, density, min_dist=0.1) {
           closestDist < location_density * 2    &&
           closestDist > location_density ) {
 
+        point_tree.insert(new_point);
         out_points.push(new_point);
         active_points.push(new_point);
       }
@@ -61,7 +58,7 @@ function poisson(dimensions, density, min_dist=0.1) {
   }
 
   return out_points;
-};
+}
 
 // Get the minimum distance from position to a list of points
 function minDist(position, points) {
@@ -79,14 +76,5 @@ function pointDist2(v1, v2) {
 
 function inBox(bbox, point) {
   return point[0] > 0 && point[0] < bbox[0] &&
-         point[1] > 0 && point[1] < bbox[1];
+        point[1] > 0 && point[1] < bbox[1];
 }
-
-if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
-  module.exports = poisson;
-}
-else {
-  window.poisson = poisson;
-}
-
-})();

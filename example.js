@@ -71,7 +71,7 @@ function create() {
         }
     };
 
-    points = poisson(bbox, densityFunction[params.distribution]);
+    points = Poisson(bbox, densityFunction[params.distribution]);
 }
 
 function render() {
