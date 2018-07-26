@@ -637,7 +637,7 @@
 
 	// Algorithm Sources
 
-	function poisson(dimensions, density, min_dist=0.1) {
+	function poisson(dimensions, density, rng=Math.random, min_dist=0.1) {
 	  const density_fn = density instanceof Function ? density : () => density;
 	  const [width, height] = dimensions;
 	  const cellSize = min_dist / Math.SQRT2;
@@ -655,8 +655,8 @@
 	  }
 
 	  const seed_point = toGrid([
-	    Math.random() * width,
-	    Math.random() * height
+	    rng() * width,
+	    rng() * height
 	  ]);
 
 	  point_tree.insert(seed_point);
@@ -664,14 +664,14 @@
 	  active_points.push(seed_point);
 
 	  while (active_points.length) {
-	    const current_point = active_points.splice(Math.floor(Math.random() * active_points.length), 1)[0];
+	    const current_point = active_points.splice(Math.floor(rng() * active_points.length), 1)[0];
 	    const location_density = density_fn(current_point);    // Evaluate the density at the current point
 
 	    attempts = 0;
 	    while (attempts < max_attempts) {
 	      const range_reduction = attempts / max_attempts; // Reduce range of point choices as the attempts decreases
-	      const radius = location_density + ( Math.sqrt(Math.random()) * location_density * range_reduction );
-	      const angle = 2 * Math.PI * Math.random();
+	      const radius = location_density + ( Math.sqrt(rng()) * location_density * range_reduction );
+	      const angle = 2 * Math.PI * rng();
 	      const new_point = toGrid([
 	          current_point[0] + radius * Math.cos(angle),
 	          current_point[1] + radius * Math.sin(angle)
@@ -699,10 +699,10 @@
 	// works on the bounding box in the relevent range of points
 	function minDist(position, point_tree, location_density) {
 	  const local_points = point_tree.search({
-	    minX: position[0] - location_density * 2,
-	    minY: position[1] - location_density * 2,
-	    maxX: position[0] + location_density * 2,
-	    maxY: position[1] + location_density * 2,
+	    minX: position[0] - location_density,
+	    minY: position[1] - location_density,
+	    maxX: position[0] + location_density,
+	    maxY: position[1] + location_density,
 	  });
 
 	  if (local_points.length == 0) {

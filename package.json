@@ -1,6 +1,6 @@
 {
   "name": "adaptive-poisson-sampling",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "An adaptive poisson disk sampling algorithm to generate 2D blue noise vector distributions",
   "main": "index.js",
   "dependencies": {

@@ -13,10 +13,13 @@ var width;
 var height;
 var bbox;
 var points;
+var rng;
 
 var params = {
     // Parameters
     density: 25,
+    jitter: 0,
+    seed: 1,
     distribution: 'Uniform',
 
     // Options
@@ -42,11 +45,14 @@ function setup() {
 function setUpGui() {
     var gui = new dat.GUI();
 
+    gui.add(params, "seed", 1, 5, 1).name("RNG Seed").onChange(createAndRender);
     gui.add(params, "density", 15, 50, 1).name("Point Density").onChange(createAndRender);
+    gui.add(params, "jitter", 0, 2, 0.1).name("Point Jitter").onChange(createAndRender);
     gui.add(params, "distribution", params.distributions).name("Distribution").onChange(createAndRender);
 }
 
 function createAndRender() {
+    rng = Alea(params.seed);
     create();
     render();
 }
@@ -71,7 +77,15 @@ function create() {
         }
     };
 
-    points = Poisson(bbox, densityFunction[params.distribution]);
+    points = poisson(bbox, densityFunction[params.distribution], rng);
+    points = points.map(vec => {
+        const jitter = params.jitter * densityFunction[params.distribution](vec);
+        const angle = 2*Math.PI * rng();
+        return [
+            vec[0] + Math.cos(angle) * jitter,
+            vec[1] + Math.sin(angle) * jitter
+        ];
+    });
 }
 
 function render() {

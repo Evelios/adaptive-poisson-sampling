@@ -12,7 +12,7 @@ export default {
   output: [
     // UMD Build
     {
-      name: 'Poisson',
+      name: 'poisson',
       file: 'index.js',
       format: 'umd',
       interop: false,

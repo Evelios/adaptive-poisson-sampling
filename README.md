@@ -11,6 +11,8 @@ This library is an addaptive sampling library because it doesn't just generate
 a uniform density distribution but can be used to create a series of points
 that generally conform to the input function.
 
+![Example Image](example.PNG)
+
 ## Instilation
 
 ```sh
@@ -28,6 +30,9 @@ And in the browser! (It includes the global variable `poisson`)
 ```html
 <script type='text/javascript' src='./node_modules/adaptive-poisson-sampling.js'></script>
 ```
+
+Basic Description:  
+`poisson(dimensions, density, [rng, [cell_dist]]);`
 
 Then to use the function you can do the following
 ```js
@@ -48,8 +53,19 @@ var density_function = function(vector) {
 var noise_gradient = poisson(dimensions, density_function);
 ```
 
-You can also specify a minimum cell distance for the points if you would like
+The algoriths takes in a random number generator. For example you can give it
+the Alea random number generator and make the sampling algorithm seeded.
+By default, the algorithm will use the `Math.random` function.
+```js
+// Create the random number generator.
+var rng = Alea('seed');
+
+// Running this with the same rng and same starting seed will always give the same results
+var noise = poisson(dimensions, density_function, rng);
+```
+
+You can also specify a minimum cell distance for the points if you would like. By default the minimum cell size is 0.1.
 ```js
 var min_distance = 2;
-var noise = poisson(dimensions, density_function, min_distance);
+var noise = poisson(dimensions, density_function, rng, min_distance);
 ```
