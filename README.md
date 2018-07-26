@@ -11,7 +11,10 @@ This library is an addaptive sampling library because it doesn't just generate
 a uniform density distribution but can be used to create a series of points
 that generally conform to the input function.
 
-![Example Image](example.PNG)
+[**Take it for a test drive!**](https://evelios.github.io/adaptive-poisson-sampling/example.html)
+
+
+[![Example Image](example.PNG)](https://evelios.github.io/adaptive-poisson-sampling/example.html)
 
 ## Instilation
 

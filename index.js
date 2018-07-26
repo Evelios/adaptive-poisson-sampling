@@ -1,7 +1,7 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
 	typeof define === 'function' && define.amd ? define(factory) :
-	(global.Poisson = factory());
+	(global.poisson = factory());
 }(this, (function () { 'use strict';
 
 	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -723,7 +723,7 @@
 
 	function inBox(bbox, point) {
 	  return point[0] > 0 && point[0] < bbox[0] &&
-	        point[1] > 0 && point[1] < bbox[1];
+	         point[1] > 0 && point[1] < bbox[1];
 	}
 
 	return poisson;
