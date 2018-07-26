@@ -16,21 +16,6 @@ export default {
       file: 'index.js',
       format: 'umd',
       interop: false,
-    },
-    // // Node.js Build
-    // {
-    //   file: 'module.js',
-    //   format: 'amd',
-    //   interop: false,
-    // },
-    // // Browser Build
-    // {
-    //   name: 'Poisson',
-    //   file: 'bundle.js',
-    //   format: 'iife',
-    //   interop: false,
-    // },
-    
+    },    
   ],
-
 };
