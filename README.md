@@ -36,6 +36,16 @@ And in the browser! (It includes the global variable `poisson`)
 
 Basic Description:  
 `poisson(dimensions, density, [rng, [cell_dist]]);`
++ `dimensions` : The dimensions of the bounding box [width, height]
++ `density [number|function(vec=[x,y])]`: The average distance between the
+points.This can be a number or a function that returns the distance at a
+particular location in list form [x, y].
++ `rng` : The random number generator used for the algorithm. This can be
+something like [alea](https://www.npmjs.com/package/alea). The default
+rng is `Math.random`.
++ `cell_dist` : This is an optimization parameter that can help to speed
+up the gerenation time at a cost of resolution. The default for this is
+`0.1`.
 
 Then to use the function you can do the following
 ```js
