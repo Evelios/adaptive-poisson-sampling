@@ -45,7 +45,7 @@ export default function poisson(dimensions, density, rng=Math.random, min_dist=0
 
       // Try the new point against the already generated points
       const closestDist = minDist(new_point, point_tree, location_density);
-      if (inBox(dimensions, new_point) && 
+      if (inBox(dimensions, new_point) &&
           closestDist < location_density * 2    &&
           closestDist > location_density ) {
 

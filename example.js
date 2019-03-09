@@ -20,7 +20,7 @@ var params = {
     density: 25,
     jitter: 0,
     seed: 1,
-    distribution: 'Uniform',
+    distribution: 'Gradient',
 
     // Options
     distributions: [
